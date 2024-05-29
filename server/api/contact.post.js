@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 		await isValid(body)
 			.then(async (data) => {
 				const mail = await transporter.sendMail({
-					form: `"${data.name}" <${data.email}>`,
+					from: `"${data.name}" <${data.email}>`,
 					to: config.CONTACTMAIL,
 					subject: data.subject,
 					text: data.message,
@@ -43,10 +43,7 @@ async function isValid(body) {
 	const errors = [];
 
 	if (validator.isEmpty(body.email || ''))
-		errors.push({
-			field: 'email',
-			error: 'Field is required.',
-		});
+		errors.push({ field: 'email', error: 'Field is required.' });
 	if (validator.isEmpty(body.name || ''))
 		errors.push({ field: 'name', error: 'Field is required.' });
 	if (validator.isEmpty(body.subject || ''))
